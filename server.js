@@ -36,7 +36,8 @@ passport.use('ldap', new CustomStrategy(async function (req, done) {
         // AUTENTICACION EXITOSA
         done(null, user)
     } catch (error) { // AUTENTICACION FALLIDA
-        done(error, null)
+        done(null, null)
+
     }
 }));
 
@@ -100,4 +101,4 @@ app.get("/adm/logout", function (req, res) {
 });
 
 //ASIGNANDO UN PUERTO AL SERVIDOR
-app.listen(8000, () => console.log("Server Running! Dont touch it more!"));
+app.listen(8000, () => console.log("Ya está corriendo, ya no lo toques más"));

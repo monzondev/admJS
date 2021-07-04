@@ -1,16 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Panel de control - Acceso</title>
 </head>
+
 <body>
-    <form action="/adm/login" method="POST">
-    <input type="text" name="username" id="username" autocomplete='username' placeholder='Nombre de usuario' required='' autofocus='')>
-    <input type="password" name="password" id="password" autocomplete='current-password' placeholder='Contraseña' required=''>
-    <input type="submit" value="Iniciar">
-    </form>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
+        <div class="container">
+            <a class="navbar-brand" href="/adm/login">LDAP</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/adm/login">Inicio de sesion</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <BR><BR>
+    <main class="login-form">
+        <div class="cotainer">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Acceso a panel de control</div>
+                        <div class="card-body">
+                            <form action="/adm/login" method="POST">
+                                <div class="form-group row">
+                                    <label for="email_address"
+                                        class="col-md-4 col-form-label text-md-right">Usuario</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="username" class="form-control" name="username" required
+                                            autofocus>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="password"
+                                        class="col-md-4 col-form-label text-md-right">Contraseña</label>
+                                    <div class="col-md-6">
+                                        <input type="password" id="password" class="form-control" name="password"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Entrar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    </main>
+
 </body>
+
 </html>
