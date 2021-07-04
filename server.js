@@ -97,8 +97,18 @@ app.get("/adm/login", (req, res, next) => {
 // CERRAR LA SESION DE LDAP
 app.get("/adm/logout", function (req, res) {
     req.logOut();
-    res.redirect("/adm/login"); 
+    res.redirect("/adm/loSEGUN RESULTADO DE AUTENTICACIONgin"); 
 });
 
 //ASIGNANDO UN PUERTO AL SERVIDOR
-app.listen(8000, () => console.log("Ya está corriendo, ya no lo toques más"));
+app.listen(8001, () => console.log("Ya está corriendo, ya no lo toques más"));
+
+// REDIRECCIONAMIENTO PARA REGISTRAR USUARIOS
+app.post('/adm', function (req, res) {
+    //VARIABLES DE LOS DATOS
+    req.body.name
+    req.body.lastName
+    req.body.emailAccount
+    req.body.password
+    res.send('En construccion conexion con LDAP');
+  });
