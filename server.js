@@ -1,29 +1,69 @@
 const express = require('express');
 const passport = require('passport');
-//LIBRERIA DE MANEJADORES DE PETICIONES HTTP
+// MODULOS PARA QUE EXPRESS MANEJE SESIONES
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const PassportLocal = require('passport-local').Strategy;
+
+// LIBRERIA DE MANEJADORES DE PETICIONES HTTP
 const app = express();
 
-//LIBRERIA DE AUTENTICACION DE USUARIOS
-const app = passport();
+app.use(express.urlencoded({extended: true}));
+app.use(cookieParser('secretWords'));
+app.use(session({secret: 'secretWords', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+4
+app.use(passport.session());
 
-//MOTOR DE VISTA
-app.set('view engine','ejs');
+passport.use(new PassportLocal(function (username, password, done) {
 
+    if (username === "admin" && password === "admin") 
+        return done(null, {
+            id: 1,
+            name: "Administrador"
+        });
+    
+    done(null, false);
+}));
 
-//VALIDACION DE LOGUEO
-app.get("/adm",(req,res)=>{
-//LOGUEADO
-//NO LOGUEADO
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
 });
 
-    //FORMULARIO DE LOGUEO
-app.get("/adm/login",(req,res)=>{
-   res.render("login");
+passport.deserializeUser(function (id, done) {
+    done(null, {
+        id: 1,
+        name: "Administrador"
+    });
 });
 
-//RECIBIR CREDENCIALES E INICIAR SESION
-app.post("/adm/login",(req,res)=>{
-    res.send("Hola mundo");
+
+// MOTOR DE VISTA
+app.set('view engine', 'ejs');
+
+
+// VALIDACION DE LOGUEO
+
+app.get("/adm", (req, res, next) => {
+    if (req.isAuthenticated()) 
+        return next();
+    res.redirect("/adm/login")
+}, (req, res) => {
+    res.render("adm");
 });
 
-app.listen(8000,()=>console.log("Server started"));
+// FORMULARIO DE LOGUEO
+app.get("/adm/login", (req, res, next) => {
+    if (!req.isAuthenticated()) 
+        return next();
+    res.redirect("/adm")
+}, (req, res) => {
+    res.render("login");
+});
+
+// RECIBIR CREDENCIALES E INICIAR SESION
+app.post("/adm/login", passport.authenticate('local', {
+    successRedirect: "/adm",
+    failureRedirect: "/adm/login"
+}));
+app.listen(8000, () => console.log("Server started"));
