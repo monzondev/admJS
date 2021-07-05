@@ -94,10 +94,10 @@ app.get("/adm/login", (req, res, next) => {
     res.render("login");
 });
 
-// CERRAR LA SESION DE LDAP
+// CERRAR LA SESION DE LDAP SEGUN RESULTADO DE AUTENTICACION
 app.get("/adm/logout", function (req, res) {
     req.logOut();
-    res.redirect("/adm/loSEGUN RESULTADO DE AUTENTICACIONgin"); 
+    res.redirect("/adm/login"); 
 });
 
 //ASIGNANDO UN PUERTO AL SERVIDOR
