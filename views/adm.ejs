@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <title>Panel de control - Acceso</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Panel de control - Acceso</title>
+</head>
 
-    <body style="background-color: #F5F5F5;">
-        <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="/adm/login">LDAP - ADMINISTRACION</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body style="background-color: #F5F5F5;">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
+        <div class="container">
+            <a class="navbar-brand" href="/adm/login">LDAP - ADMINISTRACION</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/adm/logout">Cerrar Sesion</a>
-                        </li>
-                    </ul>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/adm/logout">Cerrar Sesion</a>
+                    </li>
+                </ul>
 
-                </div>
             </div>
-        </nav>
-        <BR><BR>
-        <main class="login-form">
-            <div class="cotainer">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">PANEL DE CONTROL - CREACION DE CUENTAS DE CORREO</div>
-                            <div class="card-body">
-                                <form action="/adm" method="POST">
-                                    <br><br>
-                                    <div class="form-group row">
-                                        <label for="name" class="col-md-4 col-form-label text-md-right">Nombre</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="name" class="form-control" name="name" required autofocus autocomplete="off">
-                                        </div>
+        </div>
+    </nav>
+    <BR><BR>
+    <main class="login-form">
+        <div class="cotainer">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">PANEL DE CONTROL - CREACION DE CUENTAS DE CORREO</div>
+                        <div class="card-body">
+                            <form action="/adm" method="POST">
+                                <br><br>
+                                <div class="form-group row">
+                                    <label for="name" class="col-md-4 col-form-label text-md-right">Nombre</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="name" class="form-control" name="name"
+                                            placeholder="Escribe tu Nombre" required autofocus autocomplete="off">
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="lastname" class="col-md-4 col-form-label text-md-right">Apellido</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="lastname" class="form-control" name="lastname" required autofocus autocomplete="off">
-                                        </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="lastname" class="col-md-4 col-form-label text-md-right">Apellido</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="lastname" class="form-control" name="lastname"
+                                            placeholder="Escribe tu Apellido" required autofocus autocomplete="off">
                                     </div>
+                                </div>
 
-                                    <div class="form-group row">
-                                        <label for="emailAccount" class="col-md-4 col-form-label text-md-right">Correo electronico</label>
-                                        <div class="col-md-7">
-                                            <input type="email" id="emailAccount" class="form-control" placeholder="example@yuca.com" name="emailAccount" required autocomplete="off">
-                                        </div>
+                                <div class="form-group row">
+                                    <label for="emailAccount" class="col-md-4 col-form-label text-md-right">Correo
+                                        electronico</label>
+                                    <div class="col-md-7">
+                                        <input type="email" id="emailAccount" class="form-control"
+                                            placeholder="example@enchiladas.com" name="emailAccount" required
+                                            autocomplete="off">
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="password" class="col-md-4 col-form-label text-md-right">Contraseña</label>
-                                        <div class="col-md-6">
-                                            <input type="password" id="password" class="form-control" name="password" required autofocu autocomplete="off">
-                                        </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password2"
+                                        class="col-md-4 col-form-label text-md-right">Contraseña</label>
+                                    <div class="col-md-6">
+                                        <input type="password" id="password2" class="form-control" name="password2"
+                                            placeholder="Escribe tu contraseña" required autofocus >
                                     </div>
-                                    <br>
-                                    <div class="col-md-6 offset-md-5">
-                                        <button type="submit" class="btn btn-success">
-                                            Registrar
-                                        </button>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password2" class="col-md-4 col-form-label text-md-right">Confirmar
+                                        contraseña</label>
+                                    <div class="col-md-6">
+                                        <input type="password" id="confirm-password" class="form-control"
+                                            name="confirm-password" placeholder="Vuelve a tu escribir contraseña" required
+                                            autofocus autocomplete="off">
                                     </div>
-                                </form>
-                            </div>
+                                   
+                                </div>
+                                <br>
+                                <div class="col-md-6 offset-md-5">
+                                    <button type="submit" class="btn btn-success">
+                                        Registrar
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-</html></main></body></html>
+    </main>
+</body>
+
+</html>

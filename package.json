@@ -12,11 +12,11 @@
   "dependencies": {
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
-    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
-    "ldap-authentication": "^2.2.7",
+    "ldapjs": "^2.3.0",
+    "md5": "^2.3.0",
     "passport": "^0.4.1",
     "passport-custom": "^1.1.1",
     "passport-local": "^1.0.0"
