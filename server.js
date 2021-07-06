@@ -1,4 +1,5 @@
 // IMPORTACION DE MODULOS NECESARIOS
+require('dotenv').config();
 const express = require('express');
 const passport = require('passport');
 const CONFIG = require('./config.js')
@@ -18,7 +19,8 @@ passport.use('ldap', new CustomStrategy(async function (req, done) {
         if (! req.body.username || ! req.body.password) {
             throw new Error('Usuario y contraseña no proporcionados')
         }
-        let ldapBaseDn = CONFIG.ldap.dn
+        //let ldapBaseDn = process.env.URL;
+        let ldapBaseDn = CONFIG.ldap.dn;
         let options = {
             ldapOpts: {
                 url: CONFIG.ldap.url
@@ -92,23 +94,31 @@ app.get("/adm/login", (req, res, next) => {
         res.redirect("/adm")
 }, (req, res) => {
     res.render("login");
+
+    var FQDN = req.get('host').substring(0, host.indexOf(":"));
+    console.log()
+    if (FQDN == yuca.com) {
+        process.env.URL=  "ou = yuca, ou = sistemas" + CONFIG.ldap.dn;
+    }else if (FQDN == enchiladas.com){
+        process.env.URL =  "ou = enchiladas, ou = sistemas" + CONFIG.ldap.dn;
+    }
+    console.log(req.get('host').substring(0, host.indexOf(":")));
 });
 
 // CERRAR LA SESION DE LDAP SEGUN RESULTADO DE AUTENTICACION
 app.get("/adm/logout", function (req, res) {
     req.logOut();
-    res.redirect("/adm/login"); 
+    res.redirect("/adm/login");
 });
 
-//ASIGNANDO UN PUERTO AL SERVIDOR
-app.listen(8001, () => console.log("Ya está corriendo, ya no lo toques más"));
+// ASIGNANDO UN PUERTO AL SERVIDOR
+app.listen(8001, () => console.log("Ya está corriendo, ya no lo toques más puerto 8001"));
 
 // REDIRECCIONAMIENTO PARA REGISTRAR USUARIOS
-app.post('/adm', function (req, res) {
-    //VARIABLES DE LOS DATOS
+app.post('/adm', function (req, res) { // VARIABLES DE LOS DATOS
     req.body.name
     req.body.lastName
     req.body.emailAccount
     req.body.password
     res.send('En construccion conexion con LDAP');
-  });
+});
