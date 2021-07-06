@@ -1,5 +1,4 @@
 // IMPORTACION DE MODULOS NECESARIOS
-require('dotenv').config();
 const express = require('express');
 const passport = require('passport');
 const CONFIG = require('./config.js')

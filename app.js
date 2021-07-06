@@ -65,7 +65,7 @@ app.get("/adm/login", (req, res, next) => {
 
 // EJECUCION DE LA FUNCION DE AUTENTICACION POSTERIOR AL POST DEL CLIENTE
 app.post("/adm/login", (req, res, next) => {
-    let user = "uid=" + req.body.username + CONFIG.ldap.dn;
+    let user = "uid=" + req.body.username+ CONFIG.ldap.dn;
     authenticateDN(user, req.body.password);
 });
 let user = "uid=gauss, ou=example" ;
