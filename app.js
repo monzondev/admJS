@@ -7,7 +7,7 @@ const cookieSession = require('cookie-session')
 const session = require('express-session');
 const PassportLocal = require('passport-local').Strategy;
 const CustomStrategy = require('passport-custom').Strategy
-const md5 =require("md5");
+const md5 = require("md5");
 
 
 // INSTANCIA DE EXPRESS
@@ -17,7 +17,6 @@ const app = express();
 app.set('view engine', 'ejs');
 
 // *********************************CONFIGURACION PARA CREAR LA SESION***********************************************//
-
 
 // URL DEL SERVIDOR LDAP
 const client = ldap.createClient({url: CONFIG.ldap.url});
@@ -40,6 +39,8 @@ passport.use('ldap', new CustomStrategy(async function (req, done) {
 
             } else { // AUTENTICACION EXITOSA
                 console.log(" Connection success");
+                process.env.USERNAME = req.body.username;
+                process.env.PASSN = req.body.password;
                 done(null, 1)
             }
         });
@@ -81,15 +82,13 @@ app.get("/adm", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm/login")
-
-
     
-
-
 }, (req, res) => {
     res.render("adm");
-    cargarCuentas();
- 
+    console.log(process.env.USERNAME);
+    console.log(process.env.PASSN);
+    // cargarCuentas();
+
 });
 
 // REDIRECCION A FORMULARIO DE LOGUEO + VALIDACION DE EXISTENCIA DE AUTENTICACION
@@ -98,10 +97,12 @@ app.get("/adm/login", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm")
-        cargarCuentas();d
-
-
+        console.log(process.env.USERNAME);
+        console.log(process.env.PASSN);
     
+
+    // cargarCuentas();
+
 
 }, (req, res) => {
     res.render("login");
@@ -116,46 +117,54 @@ app.post("/adm/login", passport.authenticate('ldap', {
 // CERRAR LA SESION DE LDAP SEGUN RESULTADO DE AUTENTICACION
 app.get("/adm/logout", function (req, res) {
     req.logOut();
+    process.env.USERNAME = "";
+    process.env.PASSN = "";
     res.redirect("/adm/login");
 });
 
 // **************************************FIN CONFIGURACION PARA CREAR LA SESION********************************************//
 
 
+
+
 // **********************************CONFIGURACION PARA CREAR CUENTAS DE CORREO********************************************//
 
-function crearCuenta(name, mail,lastname,password) {
-            // VALIDACION EN EL SERVIDOR LDAP
-            let username = "uid=" + "enchiladas" + "," + CONFIG.ldap.dn;
-            // CREACION DE CONEXION A LDAP CON LOS PARAMETROS PASADOS POR LA VISTA LOGIN
-            client.bind(username, "enchiladas", function (err) {
-                if (err) { // AUTENTICACION FALLIDA
-                    console.log("Error in new connetion " + err)
-                    
-    
-                } else { // AUTENTICACION EXITOSA
-                    console.log(" Connection success");
-                    let dominio="enchiladas";
-                    const entry = {
-                        cn: name,
-                        homeDirectory: "/home/vmail/"+dominio+"/"+name +"."+ lastname,
-                        mail: mail,
-                        ObjectClass: ['inetOrgPerson','organizationalPerson','CourierMailAccount','person','top'],
-                        sn: lastname,
-                        mailbox: dominio+"/"+name +"."+ lastname,
-                        userPassword:  md5(password)
-                    };
-                    //let nombreconcat = name +"."+ lastname;
-                    client.add(('uid='+name +"."+ lastname+',ou='+dominio+',ou=sistemas,dc=enchiladas,dc=com'), entry, (err) => {
-                        if (err) {
-                            console.log("err in new user " + err);
-                        } else {
-                            console.log("added user")
-                        }
-                    }); 
+function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVIDOR LDAP
+    let username = "uid=" + process.env.USERNAME + "," + CONFIG.ldap.dn;
+    // CREACION DE CONEXION A LDAP CON LOS PARAMETROS PASADOS POR LA VISTA LOGIN
+    client.bind(username, process.env.PASSN, function (err) {
+        if (err) { // AUTENTICACION FALLIDA
+            console.log("Error in new connetion " + err)
+
+
+        } else { // AUTENTICACION EXITOSA
+            console.log(" Connection success");
+            let dominio = "enchiladas";
+            const entry = {
+                cn: name,
+                homeDirectory: "/home/vmail/" + dominio + "/" + name + "." + lastname,
+                mail: mail,
+                ObjectClass: [
+                    'inetOrgPerson',
+                    'organizationalPerson',
+                    'CourierMailAccount',
+                    'person',
+                    'top'
+                ],
+                sn: lastname,
+                mailbox: dominio + "/" + name + "." + lastname,
+                userPassword: md5(password)
+            };
+            client.add(('uid=' + name + "." + lastname + ',ou=' + dominio + ',ou=sistemas,dc=enchiladas,dc=com'), entry, (err) => {
+                if (err) {
+                    console.log("err in new user " + err);
+                } else {
+                    console.log("added user")
                 }
             });
-   
+        }
+    });
+
 }
 
 app.post("/adm", function (req, res) {
@@ -165,7 +174,9 @@ app.post("/adm", function (req, res) {
 // **************************************FIN CONFIGURACION PARA CREAR LA CUENTAS********************************************//
 
 
-function cargarCuentas() {
+// ****************************** CONFIGURACION PARA CARGAR CUENTAS DE CORREO*******************************************//
+
+/*function cargarCuentas() {
     const opts = {
         scope: 'sub',
         attributes: ['sn', 'cn']
@@ -190,11 +201,10 @@ if (err) {
             });
         }
     });
-}
+}*/
 
 
-
-// ****************************** FIN CONFIGURACION PARA CREAR CUENTAS DE CORREO*******************************************//
+// ****************************** FIN CONFIGURACION PARA CARGAR CUENTAS DE CORREO*******************************************//
 
 
 // ASIGNACION DE PUERTO AL SERVIDOR
