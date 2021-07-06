@@ -8,5 +8,7 @@ Instalacion de node y modulos basicos de node
 
 ```
 apt-get install node
-npm install
+apt-get install npm
+npm install express --save
+npm install ldapjs
 ```
