@@ -152,8 +152,7 @@ function crearCuenta(name, mail,lastname,password) {
                         } else {
                             console.log("added user")
                         }
-                    });
-                    
+                    }); 
                 }
             });
    
@@ -161,6 +160,7 @@ function crearCuenta(name, mail,lastname,password) {
 
 app.post("/adm", function (req, res) {
     crearCuenta(req.body.name, req.body.emailAccount, req.body.lastname, req.body.password2)
+    res.redirect("/adm");
 });
 // **************************************FIN CONFIGURACION PARA CREAR LA CUENTAS********************************************//
 
