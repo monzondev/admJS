@@ -85,6 +85,8 @@ app.get("/adm", (req, res, next) => {
     
 }, (req, res) => {
     res.render("adm");
+    var FQDN = req.get('host').substring(3, (req.get('host').indexOf(":")-4));
+    console.log("Este es el fqdn"+FQDN);
     // cargarCuentas();
 
 });
@@ -95,6 +97,8 @@ app.get("/adm/login", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm");
+        var FQDN = req.get('host').substring(3, (req.get('host').indexOf(":")-4));
+        console.log("Este es el fqdn"+FQDN);
     // cargarCuentas();
 
 
@@ -133,10 +137,18 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
 
         } else { // AUTENTICACION EXITOSA
             console.log(" Connection success");
-            let dominio = "enchiladas";
+            var FQDN = req.get('host').substring(3, (req.get('host').indexOf(":")-4));
+            let concat;
+            console.log("Este es el fqdn"+FQDN);
+            if (FQDN == "yuca") {
+                concat = CONFIG.ldap.dn2;
+            }else{
+                concat = CONFIG.ldap.dn3;
+            }
+            
             const entry = {
                 cn: name,
-                homeDirectory: "/home/vmail/" + dominio + "/" + name + "." + lastname,
+                homeDirectory: "/home/vmail/" + FQDN + "/" + name + "." + lastname,
                 mail: mail,
                 ObjectClass: [
                     'inetOrgPerson',
@@ -146,10 +158,10 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
                     'top'
                 ],
                 sn: lastname,
-                mailbox: dominio + "/" + name + "." + lastname,
+                mailbox: FQDN + "/" + name + "." + lastname,
                 userPassword: md5(password)
             };
-            client.add(('uid=' + name + "." + lastname + ',ou=' + dominio + ',ou=sistemas,dc=enchiladas,dc=com'), entry, (err) => {
+            client.add(('uid=' + name + "." + lastname + concat), entry, (err) => {
                 if (err) {
                     console.log("err in new user " + err);
                 } else {
