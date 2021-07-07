@@ -4,18 +4,16 @@ Desarrollado con NodeJS, PassportJS Y Express
 
 ### Pre-requisitos 📋
 
-Instalacion de node, npm y modulos especificos 
+Contar con la instalacion de
 
 ```
-apt-get install node
-apt-get install npm
-npm install express --save
-npm install ldapjs
-npm install passport-local
-npm install passport-custom
-npm install passport
-npm install express-session
-npm install ejs
-npm install cookie-session
-npm install cookie-parser
+docker
+docker-compose
+```
+### Building .
+
+Contar con la instalacion de
+
+```
+docker-compose up --build
 ```
