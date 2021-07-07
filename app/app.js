@@ -217,7 +217,9 @@ if (err) {
 
 
 // ****************************** FIN CONFIGURACION PARA CARGAR CUENTAS DE CORREO*******************************************//
-
+app.get("/", function (req, res) {
+    res.redirect("http://104.198.177.23:8000");
+});
 
 // ASIGNACION DE PUERTO AL SERVIDOR
 app.listen(5000, () => console.log("Ya está corriendo, ya no lo toques más, puerto 8001"));
