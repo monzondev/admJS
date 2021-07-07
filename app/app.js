@@ -85,8 +85,8 @@ app.get("/adm", (req, res, next) => {
     
 }, (req, res) => {
     res.render("adm");
-    let host= req.get('host');
-    var FQDN = host.substring(4, (host.indexOf(":")-4));
+    var arrayDeCadenas = req.get('host').split(".");
+    var FQDN = arrayDeCadenas[1];
     console.log("Este es el fqdn "+FQDN);
     // cargarCuentas();
 
@@ -98,14 +98,17 @@ app.get("/adm/login", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm");
-        let host= req.get('host');
-        var FQDN = host.substring(4, (host.indexOf(":")-4));
+        var arrayDeCadenas = req.get('host').split(".");
+        var FQDN = arrayDeCadenas[1];
         console.log("Este es el fqdn "+FQDN);
     // cargarCuentas();
 
 
 }, (req, res) => {
     res.render("login");
+    var arrayDeCadenas = req.get('host').split(".");
+    var FQDN = arrayDeCadenas[1];
+    console.log("Este es el fqdn "+FQDN);
 });
 
 // ACCION DE VERIFICACION DE LA AUTENTICACION Y REDIRECCION
@@ -139,8 +142,8 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
 
         } else { // AUTENTICACION EXITOSA
             console.log(" Connection success");
-            let host= req.get('host');
-            var FQDN = host.substring(4, (host.indexOf(":")-4));
+            var arrayDeCadenas = req.get('host').split(".");
+            var FQDN = arrayDeCadenas[1];
             console.log("Este es el fqdn "+FQDN);
 
             if (FQDN == "yuca") {
