@@ -85,8 +85,6 @@ app.get("/adm", (req, res, next) => {
     
 }, (req, res) => {
     res.render("adm");
-    console.log(process.env.USERNAME);
-    console.log(process.env.PASSN);
     // cargarCuentas();
 
 });
@@ -96,11 +94,7 @@ app.get("/adm/login", (req, res, next) => {
     if (!req.isAuthenticated()) 
         return next();
      else 
-        res.redirect("/adm")
-        console.log(process.env.USERNAME);
-        console.log(process.env.PASSN);
-    
-
+        res.redirect("/adm");
     // cargarCuentas();
 
 
@@ -208,4 +202,4 @@ if (err) {
 
 
 // ASIGNACION DE PUERTO AL SERVIDOR
-app.listen(8001, () => console.log("Ya está corriendo, ya no lo toques más puerto 8001"));
+app.listen(5000, () => console.log("Ya está corriendo, ya no lo toques más, puerto 8001"));
