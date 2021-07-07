@@ -85,8 +85,9 @@ app.get("/adm", (req, res, next) => {
     
 }, (req, res) => {
     res.render("adm");
-    var FQDN = req.get('host').substring(3, (req.get('host').indexOf(":")-4));
-    console.log("Este es el fqdn"+FQDN);
+    let host= req.get('host');
+    var FQDN = host.substring(4, (host.indexOf(":")-4));
+    console.log("Este es el fqdn "+FQDN);
     // cargarCuentas();
 
 });
@@ -97,8 +98,9 @@ app.get("/adm/login", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm");
-        var FQDN = req.get('host').substring(3, (req.get('host').indexOf(":")-4));
-        console.log("Este es el fqdn"+FQDN);
+        let host= req.get('host');
+        var FQDN = host.substring(4, (host.indexOf(":")-4));
+        console.log("Este es el fqdn "+FQDN);
     // cargarCuentas();
 
 
@@ -137,9 +139,10 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
 
         } else { // AUTENTICACION EXITOSA
             console.log(" Connection success");
-            var FQDN = req.get('host').substring(3, (req.get('host').indexOf(":")-4));
-            let concat;
-            console.log("Este es el fqdn"+FQDN);
+            let host= req.get('host');
+            var FQDN = host.substring(4, (host.indexOf(":")-4));
+            console.log("Este es el fqdn "+FQDN);
+
             if (FQDN == "yuca") {
                 concat = CONFIG.ldap.dn2;
             }else{
