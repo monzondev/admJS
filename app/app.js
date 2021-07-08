@@ -85,16 +85,8 @@ app.get("/adm", (req, res, next) => {
      else 
         res.redirect("/adm/login")
 
-
-    
-
-
 }, (req, res) => {
     res.render("adm");
-    var arrayDeCadenas = req.get('host').split(".");
-    var FQDN = arrayDeCadenas[1];
-    console.log("Este es el fqdn " + FQDN);
-    process.env.HOST = req.get('host').split(".");
 });
 
 // REDIRECCION A FORMULARIO DE LOGUEO + VALIDACION DE EXISTENCIA DE AUTENTICACION
@@ -103,13 +95,6 @@ app.get("/adm/login", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm");
-    
-
-
-    var arrayDeCadenas = req.get('host').split(".");
-    var FQDN = arrayDeCadenas[1];
-    console.log("Este es el fqdn " + FQDN);
-    process.env.HOST = req.get('host').split(".");
 
 }, (req, res) => {
     res.render("login");
@@ -154,7 +139,7 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
                 FQDN = "yuca"
             } else {
                 concat = CONFIG.ldap.dn3;
-                FQDN = "yuca"
+                FQDN = "eloteloco"
             }
 
             const entry = {
