@@ -15,7 +15,7 @@ const app = express();
 
 // MOTOR DE VISTA
 app.set('view engine', 'ejs');
-app.set('views', __dirname +'/views');
+app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + "/public"));
 
 // *********************************CONFIGURACION PARA CREAR LA SESION***********************************************//
@@ -79,13 +79,15 @@ passport.deserializeUser(function (user, done) {
 
 
 // REDIRECCION A PANEL DE CONTROL + VALIDACION DE EXISTENCIA DE AUTENTICACION
-app.get("/", (req, res, next) => {
+app.get("/adm", (req, res, next) => {
     if (req.isAuthenticated()) 
         return next();
      else 
-        res.redirect("/login")
+        res.redirect("/adm/login")
+
 
     
+
 
 }, (req, res) => {
     res.render("adm");
@@ -96,12 +98,14 @@ app.get("/", (req, res, next) => {
 });
 
 // REDIRECCION A FORMULARIO DE LOGUEO + VALIDACION DE EXISTENCIA DE AUTENTICACION
-app.get("/login", (req, res, next) => {
+app.get("/adm/login", (req, res, next) => {
     if (!req.isAuthenticated()) 
         return next();
      else 
-        res.redirect("/");
+        res.redirect("/adm");
     
+
+
     var arrayDeCadenas = req.get('host').split(".");
     var FQDN = arrayDeCadenas[1];
     console.log("Este es el fqdn " + FQDN);
@@ -112,17 +116,17 @@ app.get("/login", (req, res, next) => {
 });
 
 // ACCION DE VERIFICACION DE LA AUTENTICACION Y REDIRECCION
-app.post("/login", passport.authenticate('ldap', {
-    successRedirect: "/",
-    failureRedirect: "/login"
+app.post("/adm/login", passport.authenticate('ldap', {
+    successRedirect: "/adm",
+    failureRedirect: "/adm/login"
 }));
 
 // CERRAR LA SESION DE LDAP SEGUN RESULTADO DE AUTENTICACION
-app.get("/logout", function (req, res) {
+app.get("/adm/logout", function (req, res) {
     req.logOut();
     process.env.USERNAME = "";
     process.env.PASSN = "";
-    res.redirect("/login");
+    res.redirect("/adm/login");
 });
 
 // **************************************FIN CONFIGURACION PARA CREAR LA SESION********************************************//
@@ -140,16 +144,19 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
 
         } else { // AUTENTICACION EXITOSA
             console.log(" Connection success");
-            var arrayDeCadenas = process.env.HOST;
-            console.log(arrayDeCadenas);
-            var FQDN = arrayDeCadenas[1];
-            console.log("Este es el fqdn " + FQDN);
 
-            if (FQDN == "yuca") {
+
+            let FQDN;
+            let concat;
+            let posicion = mail.indexOf("yuca");
+            if (posicion !== -1) {
                 concat = CONFIG.ldap.dn2;
+                FQDN = "yuca"
             } else {
                 concat = CONFIG.ldap.dn3;
+                FQDN = "yuca"
             }
+
             const entry = {
                 cn: name,
                 homeDirectory: "/home/vmail/" + FQDN + "/" + name + "." + lastname,
@@ -176,14 +183,14 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
     });
 }
 
-app.post("/", function (req, res) {
+app.post("/adm", function (req, res) {
     crearCuenta(req.body.name, req.body.emailAccount, req.body.lastname, req.body.password2)
-    res.redirect("/");
+    res.redirect("/adm");
 });
 // **************************************FIN CONFIGURACION PARA CREAR LA CUENTAS********************************************//
 
-//RENDERIZACION PAGINA 404
-app.use((req, res, next) =>{
+// RENDERIZACION PAGINA 404
+app.use((req, res, next) => {
     res.status(404).render("404");
 })
 
