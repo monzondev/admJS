@@ -122,7 +122,7 @@ app.get("/logout", function (req, res) {
     req.logOut();
     process.env.USERNAME = "";
     process.env.PASSN = "";
-    res.redirect("/login", {mensaje = "Sesion terminada"});
+    res.redirect("/login");
 });
 
 // **************************************FIN CONFIGURACION PARA CREAR LA SESION********************************************//
