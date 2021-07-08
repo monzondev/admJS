@@ -9,8 +9,6 @@ module.exports = {
     //dn2: 'ou=enchiladas,ou=sistemas,dc=enchiladas,dc=com',
 
   //URL DEL SERVIDOR LDAP
-    //url: 'ldap://ldap.forumsys.com'
-    //url: 'ldap://192.168.255.30:389' 
     url: 'ldap://34.133.12.1:389'
   }
 }

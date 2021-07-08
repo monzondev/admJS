@@ -79,11 +79,11 @@ passport.deserializeUser(function (user, done) {
 
 
 // REDIRECCION A PANEL DE CONTROL + VALIDACION DE EXISTENCIA DE AUTENTICACION
-app.get("/adm", (req, res, next) => {
+app.get("/", (req, res, next) => {
     if (req.isAuthenticated()) 
         return next();
      else 
-        res.redirect("/adm/login")
+        res.redirect("/login")
 
     
 
@@ -96,11 +96,11 @@ app.get("/adm", (req, res, next) => {
 });
 
 // REDIRECCION A FORMULARIO DE LOGUEO + VALIDACION DE EXISTENCIA DE AUTENTICACION
-app.get("/adm/login", (req, res, next) => {
+app.get("/login", (req, res, next) => {
     if (!req.isAuthenticated()) 
         return next();
      else 
-        res.redirect("/adm");
+        res.redirect("/");
     
     var arrayDeCadenas = req.get('host').split(".");
     var FQDN = arrayDeCadenas[1];
@@ -112,17 +112,17 @@ app.get("/adm/login", (req, res, next) => {
 });
 
 // ACCION DE VERIFICACION DE LA AUTENTICACION Y REDIRECCION
-app.post("/adm/login", passport.authenticate('ldap', {
-    successRedirect: "/adm",
-    failureRedirect: "/adm/login"
+app.post("/login", passport.authenticate('ldap', {
+    successRedirect: "/",
+    failureRedirect: "/login"
 }));
 
 // CERRAR LA SESION DE LDAP SEGUN RESULTADO DE AUTENTICACION
-app.get("/adm/logout", function (req, res) {
+app.get("/logout", function (req, res) {
     req.logOut();
     process.env.USERNAME = "";
     process.env.PASSN = "";
-    res.redirect("/adm/login");
+    res.redirect("/login", {mensaje = "Sesion terminada"});
 });
 
 // **************************************FIN CONFIGURACION PARA CREAR LA SESION********************************************//
@@ -176,9 +176,9 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
     });
 }
 
-app.post("/adm", function (req, res) {
+app.post("/", function (req, res) {
     crearCuenta(req.body.name, req.body.emailAccount, req.body.lastname, req.body.password2)
-    res.redirect("/adm");
+    res.redirect("/");
 });
 // **************************************FIN CONFIGURACION PARA CREAR LA CUENTAS********************************************//
 
