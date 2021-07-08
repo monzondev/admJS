@@ -15,6 +15,8 @@ const app = express();
 
 // MOTOR DE VISTA
 app.set('view engine', 'ejs');
+app.set('views', __dirname +'/views');
+app.use(express.static(__dirname + "/public"));
 
 // *********************************CONFIGURACION PARA CREAR LA SESION***********************************************//
 
@@ -82,14 +84,15 @@ app.get("/adm", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm/login")
+
     
+
 }, (req, res) => {
     res.render("adm");
     var arrayDeCadenas = req.get('host').split(".");
     var FQDN = arrayDeCadenas[1];
-    console.log("Este es el fqdn "+FQDN);
-    // cargarCuentas();
-
+    console.log("Este es el fqdn " + FQDN);
+    process.env.HOST = req.get('host').split(".");
 });
 
 // REDIRECCION A FORMULARIO DE LOGUEO + VALIDACION DE EXISTENCIA DE AUTENTICACION
@@ -98,17 +101,14 @@ app.get("/adm/login", (req, res, next) => {
         return next();
      else 
         res.redirect("/adm");
-        var arrayDeCadenas = req.get('host').split(".");
-        var FQDN = arrayDeCadenas[1];
-        console.log("Este es el fqdn "+FQDN);
-    // cargarCuentas();
-
+    
+    var arrayDeCadenas = req.get('host').split(".");
+    var FQDN = arrayDeCadenas[1];
+    console.log("Este es el fqdn " + FQDN);
+    process.env.HOST = req.get('host').split(".");
 
 }, (req, res) => {
     res.render("login");
-    var arrayDeCadenas = req.get('host').split(".");
-    var FQDN = arrayDeCadenas[1];
-    console.log("Este es el fqdn "+FQDN);
 });
 
 // ACCION DE VERIFICACION DE LA AUTENTICACION Y REDIRECCION
@@ -128,8 +128,6 @@ app.get("/adm/logout", function (req, res) {
 // **************************************FIN CONFIGURACION PARA CREAR LA SESION********************************************//
 
 
-
-
 // **********************************CONFIGURACION PARA CREAR CUENTAS DE CORREO********************************************//
 
 function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVIDOR LDAP
@@ -142,16 +140,16 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
 
         } else { // AUTENTICACION EXITOSA
             console.log(" Connection success");
-            var arrayDeCadenas = req.get('host').split(".");
+            var arrayDeCadenas = process.env.HOST;
+            console.log(arrayDeCadenas);
             var FQDN = arrayDeCadenas[1];
-            console.log("Este es el fqdn "+FQDN);
+            console.log("Este es el fqdn " + FQDN);
 
             if (FQDN == "yuca") {
                 concat = CONFIG.ldap.dn2;
-            }else{
+            } else {
                 concat = CONFIG.ldap.dn3;
             }
-            
             const entry = {
                 cn: name,
                 homeDirectory: "/home/vmail/" + FQDN + "/" + name + "." + lastname,
@@ -167,7 +165,7 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
                 mailbox: FQDN + "/" + name + "." + lastname,
                 userPassword: md5(password)
             };
-            client.add(('uid=' + name + "." + lastname + concat), entry, (err) => {
+            client.add(('uid=' + name + "." + lastname + "," + concat), entry, (err) => {
                 if (err) {
                     console.log("err in new user " + err);
                 } else {
@@ -176,7 +174,6 @@ function crearCuenta(name, mail, lastname, password) { // VALIDACION EN EL SERVI
             });
         }
     });
-
 }
 
 app.post("/adm", function (req, res) {
@@ -185,41 +182,10 @@ app.post("/adm", function (req, res) {
 });
 // **************************************FIN CONFIGURACION PARA CREAR LA CUENTAS********************************************//
 
-
-// ****************************** CONFIGURACION PARA CARGAR CUENTAS DE CORREO*******************************************//
-
-/*function cargarCuentas() {
-    const opts = {
-        scope: 'sub',
-        attributes: ['sn', 'cn']
-    };
-
-    client.search(CONFIG.ldap.dn2, opts, (err, res) => {
-        
-if (err) {
-            console.log("Error in search " + err)
-        } else {
-            res.on('searchEntry', function (entry) {
-                console.log('entry: ' + JSON.stringify(entry.object));
-            });
-            res.on('searchReference', function (referral) {
-                console.log('referral: ' + referral.uris.join());
-            });
-            res.on('error', function (err) {
-                console.error('error: ' + err.message);
-            });
-            res.on('end', function (result) {
-                console.log('status: ' + result.status);
-            });
-        }
-    });
-}*/
-
-
-// ****************************** FIN CONFIGURACION PARA CARGAR CUENTAS DE CORREO*******************************************//
-app.get("/", function (req, res) {
-    res.redirect("http://104.198.177.23:8000");
-});
+//RENDERIZACION PAGINA 404
+app.use((req, res, next) =>{
+    res.status(404).render("404");
+})
 
 // ASIGNACION DE PUERTO AL SERVIDOR
 app.listen(5000, () => console.log("Ya está corriendo, ya no lo toques más, puerto 8001"));
