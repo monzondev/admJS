@@ -12,7 +12,7 @@ docker-compose
 ```
 ### Building .
 
-Contar con la instalacion de
+Ejecutar
 
 ```
 docker-compose up --build
